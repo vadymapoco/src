@@ -5,7 +5,7 @@
 
 			<label> {{asin.title}} </label>
 
-			<p>ASIN {{asin}}</p>
+			<p>ASIN: {{asin}}</p>
 
 			<p>Keyword : {{current_keyword}}</p>
 
@@ -23,14 +23,15 @@
 						
 
 					</tr>
-					<tr v-for="(kw, index) in kwhistory">
-					   <td> {{kw.data}}</td>
-
-				       <td>{{kw.kw_position }}</td>
+					<tr v-for="(kw, index) in copy_kwhistory"
+						
+					>
+					    <td>{{kw.data}}</td>
+				        <td>{{kw.kw_position }}</td>
 				        <td>{{kw.kw_page}}</td>
 				        <td>{{kw.amazon_choice}}</td>
 				        <td>{{kw.advertising_page}}</td>
-				        <td>{{}}</td>
+				        <td>{{kw.event1}}</td>
 				       
 
 				    </tr>
@@ -41,6 +42,11 @@
 
 					<div>
 					<button @click="back">back to Keyword</button>
+					<v-btn class="primary"
+					@click="current_event"
+					>
+					Events
+					</v-btn>
 					</div>
 			<p> {{ asin }} </p>
 			<p> {{ current_keyword }} </p>
@@ -75,12 +81,8 @@
 <script>
 	import Vue from 'vue';
 	import AppEditAsinPopup from '../Components/EditAsinPopup.vue';
-	import bModal from 'bootstrap-vue/es/components/modal/modal';
 	import {mapGetters} from 'vuex';
 	import {mapActions} from 'vuex';
-	import Icon from 'vue-awesome/components/Icon';
-	import bPopover from 'bootstrap-vue/es/components/popover/popover';
-	import bPopoverDirective from 'bootstrap-vue/es/directives/popover/popover';
 	import 'vue-awesome/icons/angle-up';
 	import 'vue-awesome/icons/angle-down';
 	import 'vue-awesome/icons/brands/amazon';
@@ -94,26 +96,29 @@
 	export default {
 
 		components: {
-         bModal,
-         Icon,
          AppEditAsinPopup,
-         'b-popover' : bPopover
       },
       directives: {
-      		'b-popover' : bPopoverDirective
       	},
       created(){
       	
       	console.log('keywords/lookkwhistory actions в момент создания компонента');
-      	this.$store.dispatch('keywords/lookkwhistory');
-      	
-      	
+      	this.$store.dispatch('keywords/lookkwhistory').then( response => {
+      		console.log('then');
+      		
+     		this.copy_kwhistory = this.kwhistory.slice();
+		});
+
+      		console.log('created 2');
+
       	this.eventhistory_array = this.event.filter(item => item.keyword == this.$store.getters['keywords/current_keyword']);//фильтр по текущему ключевому слову
+
       },
 		data(){
 			return{
 			eventhistory_array: [],
-			
+			copy_kwhistory: [],
+			eventts: []
 
 		}
 	},
@@ -146,10 +151,28 @@
 			
 			action (){
 
-			}
-
-			
-
+			},
+			current_event(){
+				console.log('current event');
+				for(var i=0; i<this.copy_kwhistory.length; i++){
+					for (var x=0; x<this.eventhistory_array.length; x++){
+							if (this.copy_kwhistory[i].data >= this.eventhistory_array[x].start_date && 
+								this.copy_kwhistory[i].data <= this.eventhistory_array[x].end_date) {
+								console.log(this.copy_kwhistory[i].data);
+								var ev = true;
+								var comm = this.eventhistory_array[x].comment;
+								break;
+								
+							}else ev=false;}
+							if (ev == true) {
+								this.copy_kwhistory[i].event1 = comm;}
+								else{
+								this.copy_kwhistory[i].event1 = 'no';;
+							}
+							
+					}
+				
+			},
 			}
 			
 		}

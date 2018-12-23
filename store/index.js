@@ -184,6 +184,9 @@ export default new Vuex.Store({
 		},
 		search_term(state, value){
 			state.search_term = value;
+		},
+		loading(state, value){
+			state.loading = value;
 		}
 		
 

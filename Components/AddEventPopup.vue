@@ -1,9 +1,10 @@
 <template>
 	<div class="container asin">
-		
+
 		<div id="mypopup" class="popup" @click="closeall($event)">
 			<div class="popup-content" >
 				<div class="content">
+
 					<div class="popup-header">
 						<h3>Add new EVENT</h3>
 						
