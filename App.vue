@@ -45,7 +45,7 @@
     <v-toolbar-side-icon v-if="isMainPage" @click="drawer = !drawer"></v-toolbar-side-icon>
     <v-toolbar-title >
       
-        <v-btn flat class="headline text-uppercase mr-5" router to="firstpage"> BMZ </v-btn>
+        <v-btn flat class="headline text-uppercase mr-5" router to="firstpage"> BMZ_app </v-btn>
         <span class="subheading" v-if="isMainPage">User plan: {{user_plan}} </span>
         
     </v-toolbar-title>
