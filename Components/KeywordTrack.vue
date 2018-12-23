@@ -5,7 +5,7 @@
 
 			<label> {{asin.title}} </label>
 
-			<p>ASIN {{asin.asin}}</p>
+			<p>ASIN {{asin}}</p>
 
 			<p>Keyword : {{current_keyword}}</p>
 
@@ -44,6 +44,24 @@
 					</div>
 			<p> {{ asin }} </p>
 			<p> {{ current_keyword }} </p>
+			<table class="table table-bordered">
+				<tr>
+						<td>event_id</td>
+						<td>ASIN</td>
+						<td>Keyword</td>
+						<td>Start date</td>
+						<td>Finish date</td>
+						<td>Comment</td>
+					</tr>
+					<tr v-for="(event, index) in eventhistory_array">
+						<td>{{event.event_history_id}}</td>
+						<td>{{event.asin}}</td>
+						<td>{{event.keyword}}</td>
+						<td>{{event.start_date}}</td>
+						<td>{{event.end_date}}</td>
+						<td>{{event.comment}}</td>
+					</tr>
+			</table>
 			<p> {{ eventhistory_array }} </p>
 			
 
