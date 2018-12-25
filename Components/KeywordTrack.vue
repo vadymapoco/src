@@ -23,7 +23,7 @@
 						
 
 					</tr>
-					<tr v-for="(kw, index) in copy_kwhistory"
+					<tr v-for="(kw, index) in kwhistory"
 						
 					>
 					    <td>{{kw.data}}</td>
@@ -114,6 +114,8 @@
       	this.eventhistory_array = this.event.filter(item => item.keyword == this.$store.getters['keywords/current_keyword']);//фильтр по текущему ключевому слову
 
       },
+      
+      
 		data(){
 			return{
 			eventhistory_array: [],
@@ -154,20 +156,20 @@
 			},
 			current_event(){
 				console.log('current event');
-				for(var i=0; i<this.copy_kwhistory.length; i++){
+				for(var i=0; i<this.kwhistory.length; i++){
 					for (var x=0; x<this.eventhistory_array.length; x++){
-							if (this.copy_kwhistory[i].data >= this.eventhistory_array[x].start_date && 
-								this.copy_kwhistory[i].data <= this.eventhistory_array[x].end_date) {
-								console.log(this.copy_kwhistory[i].data);
+							if (this.kwhistory[i].data >= this.eventhistory_array[x].start_date && 
+								this.kwhistory[i].data <= this.eventhistory_array[x].end_date) {
+								console.log(this.kwhistory[i].data);
 								var ev = true;
 								var comm = this.eventhistory_array[x].comment;
 								break;
 								
 							}else ev=false;}
 							if (ev == true) {
-								this.copy_kwhistory[i].event1 = comm;}
+								this.kwhistory[i].event1 = comm;}
 								else{
-								this.copy_kwhistory[i].event1 = 'no';;
+								this.kwhistory[i].event1 = 'no';;
 							}
 							
 					}

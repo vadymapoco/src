@@ -140,6 +140,7 @@ enterUser(){
 		then( response => {
       console.log('App Signin - 1-й промис');
       console.log(response);
+      
      // console.log(this.$store.state ['mainpagestate/uid']);
 			const sett = {
           email: response.email,
