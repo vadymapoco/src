@@ -23,7 +23,7 @@
 						
 
 					</tr>
-					<tr v-for="(kw, index) in kwhistory"
+					<tr v-for="(kw, index) in copy_kwhistory"
 						
 					>
 					    <td>{{kw.data}}</td>
@@ -101,7 +101,7 @@
       directives: {
       	},
       created(){
-      	
+      	var that = this;
       	console.log('keywords/lookkwhistory actions в момент создания компонента');
       	this.$store.dispatch('keywords/lookkwhistory').then( response => {
       		console.log('then');
@@ -112,7 +112,14 @@
       		console.log('created 2');
 
       	this.eventhistory_array = this.event.filter(item => item.keyword == this.$store.getters['keywords/current_keyword']);//фильтр по текущему ключевому слову
-
+      	setTimeout(
+      		
+      		function(){
+				console.log('timer');
+      			that.current_event();
+      			}
+      		, 3000);
+      	
       },
       
       
@@ -167,9 +174,9 @@
 								
 							}else ev=false;}
 							if (ev == true) {
-								this.kwhistory[i].event1 = comm;}
+								this.copy_kwhistory[i].event1 = comm;}
 								else{
-								this.kwhistory[i].event1 = 'no';;
+								this.copy_kwhistory[i].event1 = 'no';;
 							}
 							
 					}
