@@ -119,6 +119,7 @@
 
       mounted(){
       	this.eventhistory_array = this.event.filter(item => item.keyword == this.$store.getters['keywords/current_keyword']);
+      	console.log('запускаем спинер ожидания');
 		Vue.http.get('http://bsr-consulting.com/alex.php', {
 					params: {   lookkwhistory : 'lookkwhistory',
 								uid: this.$store.getters.uid,
@@ -129,8 +130,8 @@
 					console.log('then в mounted');
 					this.$store.commit('keywords/lookkwhistory', response.data);
 					console.log('а теперь функция!');
-					console.log(this.kwhistory);
 					this.current_event();
+					console.log('выключаем спинер ожидания');
 					console.log('следующая функция');
 				},
 				(err) => {
