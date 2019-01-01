@@ -140,18 +140,11 @@ enterUser(){
 		then( response => {
       console.log('App Signin - 1-й промис');
       console.log(response);
-      
      // console.log(this.$store.state ['mainpagestate/uid']);
 			const sett = {
           email: response.email,
           uid: response.uid
-      };
-     // console.log(this);
-     //console.log(this.$store);
-     // this.$store.state['mainpagestate/uid'] = response.uid;
-     // this.$store.state.uid = response.uid;
-     // this.$store.dispatch('authstate/plan_name', response.uid);
-      
+      };      
       console.log('вызов authfirst mutation');
 
       this.$store.commit('authstate/authfirst', sett);

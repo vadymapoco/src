@@ -1,3 +1,7 @@
+<!-- компонент таблицы истории по ключевому слову. Получает данные из таблицы истори БД, также получает данные из таблицы событий БД
+, записывает их в маасивы, сравнивает поля даты и если они совпадают то поле из массива событий добавляется в массив истории-->
+
+
 <template>
 	<div>
 		
@@ -23,7 +27,7 @@
 						
 
 					</tr>
-					<tr v-for="(kw, index) in copy_kwhistory"
+					<tr v-for="(kw, index) in kwhistory"
 						
 					>
 					    <td>{{kw.data}}</td>
@@ -100,34 +104,49 @@
       },
       directives: {
       	},
-      created(){
-      	var that = this;
+      created(){/*
       	console.log('keywords/lookkwhistory actions в момент создания компонента');
-      	this.$store.dispatch('keywords/lookkwhistory').then( response => {
-      		console.log('then');
-      		
+      	this.$store.dispatch('keywords/lookkwhistory').then( response => {  //получает список истории по ключевому слову
+      		console.log('then');											// без then тоже не дожидается получения этих данных
+      													
      		this.copy_kwhistory = this.kwhistory.slice();
 		});
 
-      		console.log('created 2');
-
-      	this.eventhistory_array = this.event.filter(item => item.keyword == this.$store.getters['keywords/current_keyword']);//фильтр по текущему ключевому слову
-      	setTimeout(
-      		
-      		function(){
-				console.log('timer');
-      			that.current_event();
-      			}
-      		, 3000);
+      	this.eventhistory_array = this.event.filter(item => item.keyword == this.$store.getters['keywords/current_keyword']);//фильтр по текущему ключевому слову из другой таблицы (таблица событий)
       	
+      	this.current_event(); //подстановка данных из одной таблицы в другую на основании проверки даты*/
+      },
+
+      mounted(){
+      	this.eventhistory_array = this.event.filter(item => item.keyword == this.$store.getters['keywords/current_keyword']);
+		Vue.http.get('http://bsr-consulting.com/alex.php', {
+					params: {   lookkwhistory : 'lookkwhistory',
+								uid: this.$store.getters.uid,
+								current_keyword: this.$store.getters['keywords/current_keyword']
+							}
+				}).then (
+				(response) => {
+					console.log('then в mounted');
+					this.$store.commit('keywords/lookkwhistory', response.data);
+					console.log('а теперь функция!');
+					console.log(this.kwhistory);
+					this.current_event();
+					console.log('следующая функция');
+				},
+				(err) => {
+					console.log(err);
+				}
+				);
+			console.log('А эта функция в конце mounted');
+
       },
       
       
 		data(){
 			return{
-			eventhistory_array: [],
-			copy_kwhistory: [],
-			eventts: []
+			eventhistory_array: [], // массив сыбытий
+			copy_kwhistory: [], //копия массива истории ключевых слов
+			eventts: [] //
 
 		}
 	},
@@ -140,13 +159,13 @@
 			}),
 
 			kwhistory(){
-				return this.$store.getters['keywords/keywordhistory'];
+				return this.$store.getters['keywords/keywordhistory']; //получение данных из стора
 			},
 			asin(){
-				return this.$store.getters.current_asin;
+				return this.$store.getters.current_asin; //получение данных из стора
 			},
 			current_keyword(){
-				return this.$store.getters['keywords/current_keyword'];
+				return this.$store.getters['keywords/current_keyword']; //получение данных из стора
 			},
 			
 			
@@ -161,6 +180,7 @@
 			action (){
 
 			},
+			//выполнение подстановки данных из одного массива в другой учитывая проверку
 			current_event(){
 				console.log('current event');
 				for(var i=0; i<this.kwhistory.length; i++){
@@ -174,9 +194,9 @@
 								
 							}else ev=false;}
 							if (ev == true) {
-								this.copy_kwhistory[i].event1 = comm;}
+								this.kwhistory[i].event1 = comm;}
 								else{
-								this.copy_kwhistory[i].event1 = 'no';;
+								this.kwhistory[i].event1 = 'no';;
 							}
 							
 					}

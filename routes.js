@@ -20,6 +20,7 @@ import EventHistory from  './components/EventHistory';
 import FirstPage from './components/FirstPage';
 import Loading from './components/Loading';
 import VuetifyEx from './components/VuetifyEx';
+import AsinCopy from './components/AsinCopy';
 
 
 import store from './store';
@@ -61,6 +62,12 @@ const routes = [
 			
 		}
 	},
+	{
+		name: 'asinCopy',
+		path: '/asinCopy', /*название пути в строке поиска*/
+		component: AsinCopy,  /* название компонента*/
+	},
+
 	{
 		name: 'keywords',
 		path: '/keywords', /*название пути в строке поиска*/

@@ -193,6 +193,8 @@ export default {
         { icon: 'history', text: 'Settings',route: '/settings'},
         { icon: 'content_copy', text: 'Vuetify', route: '/vuetifyEx'  },
         { icon: 'add_circle', text: 'edit Tag'},
+        { icon: 'group_work', text: 'ASIN Copy', route: '/asinCopy'},
+
       ],
       user_menu: [
         { title: 'Click Me' },
