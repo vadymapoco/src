@@ -34,7 +34,7 @@ const routes = [
 //	},
 	{
 		name: '',
-		path: '/firstpage', /*название пути в строке поиска*/
+		path: '/dashboard', /*название пути в строке поиска*/
 		component: FirstPage /* название компонента*/
 	},
 	{
@@ -44,7 +44,7 @@ const routes = [
 	},
 	{
 		name: 'firstpage',
-		path: '/firstpage', /*название пути в строке поиска*/
+		path: '/dashboard', /*название пути в строке поиска*/
 		component: FirstPage /* название компонента*/
 	},
 	{

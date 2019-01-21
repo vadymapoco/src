@@ -9,7 +9,7 @@
 
 			<label> {{asin.title}} </label>
 
-			<p>ASIN: {{asin}}</p>
+			<p>ASIN: {{asin.asin}}</p>
 
 			<p>Keyword : {{current_keyword}}</p>
 
@@ -87,15 +87,6 @@
 	import AppEditAsinPopup from '../Components/EditAsinPopup.vue';
 	import {mapGetters} from 'vuex';
 	import {mapActions} from 'vuex';
-	import 'vue-awesome/icons/angle-up';
-	import 'vue-awesome/icons/angle-down';
-	import 'vue-awesome/icons/brands/amazon';
-	import 'vue-awesome/icons/trash';
-	import 'vue-awesome/icons/calendar-alt';
-	import 'vue-awesome/icons/edit';
-	import 'vue-awesome/icons/list';
-	import 'vue-awesome/icons/file';
-
 
 	export default {
 
@@ -138,6 +129,8 @@
 					console.log(err);
 				}
 				);
+
+
 			console.log('А эта функция в конце mounted');
 
       },
@@ -172,6 +165,10 @@
 			
 		},
 
+		beforeDestroy(){
+			this.$store.commit('keywords/clearCurrentKeyword');
+		},
+
 		methods:{
 
 			back(){
@@ -184,8 +181,8 @@
 			//выполнение подстановки данных из одного массива в другой учитывая проверку
 			current_event(){
 				console.log('current event');
-				for(var i=0; i<this.kwhistory.length; i++){
-					for (var x=0; x<this.eventhistory_array.length; x++){
+				for(let i=0; i<this.kwhistory.length; i++){
+					for (let x=0; x<this.eventhistory_array.length; x++){
 							if (this.kwhistory[i].data >= this.eventhistory_array[x].start_date && 
 								this.kwhistory[i].data <= this.eventhistory_array[x].end_date) {
 								console.log(this.kwhistory[i].data);

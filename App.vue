@@ -38,24 +38,15 @@
     </v-navigation-drawer>
  
   <v-toolbar  app fixed> 
-
-
-
-    
     <v-toolbar-side-icon v-if="isMainPage" @click="drawer = !drawer"></v-toolbar-side-icon>
     <v-toolbar-title >
-      
         <v-btn flat class="headline text-uppercase mr-5" router to="firstpage"> BMZ_app </v-btn>
         <span class="subheading" v-if="isMainPage">User plan: {{user_plan}} </span>
-        
+        <span class="subheading" v-if="isMainPage">Current ASIN: {{$store.getters.current_asin.asin}} </span>
+        <span class="subheading" v-if="isMainPage">Current Keyword: {{$store.getters['keywords/current_keyword']}} </span>
     </v-toolbar-title>
-
     <v-spacer></v-spacer>
-
-    
-
-          
-            <div> 
+        <div> 
               
               <!--Кнопка входа-->
               <button class="btn btn-outline-success mr-3" type="button"
@@ -68,19 +59,19 @@
                       @click="signUp">Регистрация</button>
               
               <!-- Кнопка выхода-->
-          <v-container>
+          
             <v-layout row >
               <v-flex md10>
-              <v-text-field v-if="isMainPage"
+                <!-- поле поиска по всему содержимому таблицы главного экрана-->
+              <v-text-field v-if="isMainPage" 
             append-outer-icon="search"
             label="Search"
             class="hidden-sm-and-down"
-            
             @input="searching($event)"
-
-          ></v-text-field>
+            ></v-text-field>
         </v-flex>
-      <v-flex md2>
+      <v-flex md3>
+              <!-- выпадающее вниз меню при нажатии на иконку пользователя-->
               <v-menu offset-y v-if="signoutbtn">
                     <v-btn
                       slot="activator"
@@ -89,7 +80,10 @@
                       @click=""
                       icon
                       flat
-                    ><v-tooltip  left>
+                    >
+                    <!-- иконка пользователя с меню и при наведении показывает электроннный адрес пользователя-->
+                    <!-- можно заменить на аватар-->
+                    <v-tooltip  left>
                       <v-icon slot="activator" large>account_circle</v-icon>
                       <span class="subheading" v-if="isMainPage">User: {{user_email}} </span>
                     </v-tooltip>
@@ -107,7 +101,7 @@
             </v-menu>
 </v-flex>
           </v-layout>
-        </v-container>
+        
                <!-- Кнопка выхода-->
             </div>
             
@@ -182,8 +176,8 @@ export default {
       },
       data(){
         return{
-        	drawer: false,
-      items: [
+      drawer: false,
+      items: [ /*пункты меню слева*/
         { icon: 'contacts', text: 'ASIN', route: '/asin'},
         { icon: 'add_circle', text: 'add ASIN'},
         { icon: 'history', text: 'Keyword',route: '/keywords'},
@@ -196,7 +190,7 @@ export default {
         { icon: 'group_work', text: 'ASIN Copy', route: '/asinCopy'},
 
       ],
-      user_menu: [
+      user_menu: [ /*пункты меню на иконке пользователя справа*/
         { title: 'Click Me' },
         { title: 'Click Me' },
         { title: 'Settings' },
@@ -216,8 +210,9 @@ export default {
         signinbtn: 'signinbtn', /* кнопка входа */
         signoutbtn: 'signoutbtn', /* кнопка выхода */
         signupbtn: 'signupbtn', /* кнопка регистрации */
-        user_plan: 'user_plan',
+        user_plan: 'user_plan', /*данные по плану пользователя*/
       }),
+      ...mapGetters(['currentAsin']),
       /*
       logoutbtn(){
         return this.$store.state.logoutbtn; //показывать или нет кнопку выхода
@@ -230,6 +225,7 @@ export default {
           signIn: 'signIn',   /* action по изменению статуса окна и кнопок регистрации */
           signUp: 'signUp' /* action для регистрации нового пользователя*/ 
       }),
+      /*методы кнопок меню слева, прописаны только те кнопки которые не переходят по роутам*/
       menu_button(index){
         switch (index) {
           case 1:
@@ -248,6 +244,7 @@ export default {
             break;
           }
       },
+      /* методы кнопок меню пользователя справа*/
       signoutClick(index){
          switch (index) {
            case 2:
@@ -258,11 +255,12 @@ export default {
             break;
           }
       },
+      /*метод выхода из пользователя*/
       preSignOut(){
-      	this.drawer = false;
+      	this.drawer = false; /* поле отвечает за отображение и скрытие левого меню */
       	this.$router.push({ path: '/'}); //чистит строку в браузере
       	
-      	this.$store.dispatch('authstate/signOutAct');
+      	this.$store.dispatch('authstate/signOutAct');  /* вызов Экшена для выхода из пользовтеля */ 
       },
       searching(value){
         console.log(value);

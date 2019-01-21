@@ -22,27 +22,27 @@
 			
 					</v-flex>
 					<v-flex md2 >
-			<v-btn dark  icon color="green" @click="cardview = true">
+			<v-btn dark  icon color="green" @click="cardview (true) ">
 				<v-icon> view_module </v-icon>
 			</v-btn>
-			<v-btn dark icon color="green" @click="cardview = false">
+			<v-btn dark icon color="green" @click="cardview (false)">
 				<v-icon> view_list </v-icon>
 			</v-btn>
 					</v-flex>
 			</v-layout>
 		</v-container>
-			<!-- модальное окно при удалении товара -->
-			<b-modal v-model="predeleteasin" 
-					 title="Are you sure??? delete ASIN"
-					 ok-title= "Delete"
-					 @ok="action_delete"
-					 >
-					 ASIN: {{current_asin}}
-			</b-modal>
+		<!-- модальное окно при удалении товара -->
+		<b-modal v-model="predeleteasin" 
+				 title="Are you sure??? delete ASIN"
+				 ok-title= "Delete"
+				 @ok="action_delete"
+				 >
+				 ASIN: {{current_asin}}
+		</b-modal>
 
 
 			<!-- модальное окно при редактировании товара -->
-			<AppEditAsinPopup  v-if="editAsinPopup"> </AppEditAsinPopup>
+		<AppEditAsinPopup  v-if="editAsinPopup"> </AppEditAsinPopup>
 
 <!--
 
@@ -54,126 +54,101 @@
 -->
 			
 
-			<div v-if="!cardview">
-				<table class="table table-bordered">
-					<tr class="name">
-						<td> Main image </td>
+	<div v-if="!asinview">
+		<table class="table table-bordered">
+			<tr class="name">
+				<td> Main image </td>
+				<td>Title
+				</td>
+				<td class="table-tag"> Tag
+					<div class="button-block">
+						<button class="btn-small" @click="SortTagASC">
+							<icon name="angle-up" class="fa-icon"></icon>
+						</button>
+						<button class="btn-small" @click="SortTagDESC">
+							<icon name="angle-down" class="fa-icon"></icon>
+						</button>
+					</div>
+				</td>
+				<td> Sales rank</td>
+				<td> Best position ???</td>
+				<td class="table-tag">Group
+					<div class="button-block">
+						<button class="btn-small" @click="SortGroupASC">
+							<icon name="angle-up" class="fa-icon"></icon>
+						</button>
+						<button class="btn-small" @click="SortGroupDESC">
+							<icon name="angle-down" class="fa-icon"></icon>
+						</button>
+					</div>
+				</td>
+				<td class="table-menubuttons"> Menu buttons
+				</td>
+			</tr>
+			<tr v-for="(asin, index) in asins_array">
+			   <td>
+			   	<img :src="asin.image_src" width="70" height="70" alt=" no image" @click="all_image">
+			   </td>				     
+		       <td>
+				<p>{{ asin.title }}</p>
+				<p class="asin">ASIN : {{ asin.asin }}</p>
+		       </td>
+		         <td>{{ asin.tag }}</td>
+		       <td></td>
+		       <td></td>
+		       <td>{{ asin.group_tovar }}</td>
+		       <td>
+					<v-tooltip absolute right >
+						<v-icon class="black--text" small @click="action_amazon(asin.asin)" slot="activator">fab fa-amazon</v-icon>
+				<!--			<icon name="brands/amazon" class="fa-icon"></icon>		-->
+						<span>Amazon link</span>
+					</v-tooltip>
 
-						<td>Title
-								
-
-
-						</td>
-						<td class="table-tag"> Tag
-							
-							<div class="button-block">
-								<button class="btn-small" @click="SortTagASC" 
-								>
-									<icon name="angle-up" class="fa-icon"></icon>
-								</button>
-								<button class="btn-small" @click="SortTagDESC"
-								>
-									<icon name="angle-down" class="fa-icon"></icon>
-								</button>
-							</div>
-							
-							
-							
-
-						</td>
-						
-						<td> Sales rank</td>
-						<td> Best position ???</td>
-						<td class="table-tag">Group
-								<div class="button-block">
-								<button class="btn-small" @click="SortGroupASC" 
-								>
-									<icon name="angle-up" class="fa-icon"></icon>
-								</button>
-								<button class="btn-small" @click="SortGroupDESC" 
-								>
-									<icon name="angle-down" class="fa-icon"></icon>
-								</button>
-							</div>
-							
-						</td>
-
-						<td class="table-menubuttons"> Menu buttons
-						</td>
-
-					</tr>
-
-
-					<tr v-for="(asin, index) in asins_array">
-
-					   <td>
-					   	<img :src="asin.image_src" width="70" height="70" alt=" no image" @click="all_image">
-					   </td>				     
-				       <td>
-						<p>{{ asin.title }}</p>
-						<p class="asin">ASIN : {{ asin.asin }}</p>
-				       </td>
-				         <td>{{ asin.tag }}</td>
-				       <td></td>
-				       <td></td>
-				       <td>{{ asin.group_tovar }}</td>
-				       <td>
-							<v-tooltip absolute right >
-								<v-icon class="black--text" small @click="action_amazon(asin.asin)" slot="activator">fab fa-amazon</v-icon>
-						<!--			<icon name="brands/amazon" class="fa-icon"></icon>		-->
-								<span>Amazon link</span>
-							</v-tooltip>
-
-							
-								<v-tooltip absolute right >
-								<v-icon class="black--text ml-1" small @click="action_list(asin)" slot="activator">fas fa-list</v-icon>
-						<!--		<icon name="list" class="fa-icon"></icon>	-->
-								<span>Keywords list</span>
-							</v-tooltip>
-								<v-tooltip absolute right >
-								<v-icon class="black--text ml-1" small @click="action_edit(asin)" slot="activator">fas fa-edit</v-icon>
-						<!--		<icon name="edit" class="fa-icon"></icon>	-->
-								<span>Edit ASIN</span>
-							</v-tooltip>
-							<v-tooltip absolute right >
-								<v-icon class="black--text ml-1" small @click="action_event(asin)" slot="activator">fas fa-calendar-alt</v-icon>
-								<span>Event history</span>
-							</v-tooltip>
-						<!--		<icon name="calendar-alt" class="fa-icon"></icon>	-->
-							<v-tooltip absolute right >
-								<v-icon class="black--text ml-1" small @click="action_history(asin)" slot="activator">fas fa-chart-line</v-icon>
-								<span>Asin history</span>
-							</v-tooltip>
-						<!--		<icon name="file" class="fa-icon"></icon>	-->
-							<v-tooltip absolute right >
-								<v-icon class="black--text ml-1" small @click="pre_action_delete(asin.id_tovar, asin.asin)" slot="activator">fas fa-trash</v-icon>
-						<!--		<icon name="trash" class="fa-icon"></icon>	-->
-								<span>Delete ASIN</span>
-							</v-tooltip>
-
-							
-				       </td>
-
-				    </tr>
 					
-				</table>
-				
-			</div>
+						<v-tooltip absolute right >
+						<v-icon class="black--text ml-1" small @click="action_list(asin)" slot="activator">fas fa-list</v-icon>
+				<!--		<icon name="list" class="fa-icon"></icon>	-->
+						<span>Keywords list</span>
+					</v-tooltip>
+						<v-tooltip absolute right >
+						<v-icon class="black--text ml-1" small @click="action_edit(asin)" slot="activator">fas fa-edit</v-icon>
+				<!--		<icon name="edit" class="fa-icon"></icon>	-->
+						<span>Edit ASIN</span>
+					</v-tooltip>
+					<v-tooltip absolute right >
+						<v-icon class="black--text ml-1" small @click="action_event(asin)" slot="activator">fas fa-calendar-alt</v-icon>
+						<span>Event history</span>
+					</v-tooltip>
+				<!--		<icon name="calendar-alt" class="fa-icon"></icon>	-->
+					<v-tooltip absolute right >
+						<v-icon class="black--text ml-1" small @click="action_history(asin)" slot="activator">fas fa-chart-line</v-icon>
+						<span>Asin history</span>
+					</v-tooltip>
+				<!--		<icon name="file" class="fa-icon"></icon>	-->
+					<v-tooltip absolute right >
+						<v-icon class="black--text ml-1" small @click="pre_action_delete(asin.id_tovar, asin.asin)" slot="activator">fas fa-trash</v-icon>
+				<!--		<icon name="trash" class="fa-icon"></icon>	-->
+						<span>Delete ASIN</span>
+					</v-tooltip>
+				</td>
+			</tr>
+		</table>
+	</div>
 			
-			<div v-if="cardview">
+	<div v-if="asinview">
 	
         <v-container
           fluid
           grid-list-md
           fill-height
         >
-          <v-layout row wrap>
-            <v-flex
-              v-for="(asin, index) in asins_array"
-              
-              xs12 sm6 md4 lg3
-              :key="asin.title"
-            >
+        <v-layout row wrap>
+        <v-flex
+          v-for="(asin, index) in asins_array"
+          
+          xs12 sm6 md4 lg3
+          :key="asin.title"
+        >
               <v-card >
               	<v-container
               		
@@ -183,7 +158,7 @@
 	                  :src="asin.image_src"
 	                  :aspect-ratio="4/3"
 	                  
-	                  style=" width:auto; height: 90%"
+	                  style=" width:auto; height: auto"
 	                  
 	                >
 	                </v-img>
@@ -308,9 +283,8 @@
       		this.$store.dispatch('asinmenu/lookasin'); 
       		this.asins_array = this.$store.getters['asinmenu/asins'];
       		this.old_asins_array = this.asins_array.slice();
+      		
       },
-
-     
 		data(){
 			return{
 			seeTovar: true,
@@ -334,7 +308,8 @@
 			search_table: '',
 			asins_array: [],
 			old_asins_array: [],
-			cardview: false,
+			
+			/* для примера
 			cards: [
         { title: 'Pre-fab homes', src: 'https://cdn.vuetifyjs.com/images/cards/house.jpg', flex_xs: 12, flex_md: 4, flex_sm: 6 },
         { title: 'Favorite road trips', src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg', flex_xs: 12, flex_md: 4, flex_sm: 6 },
@@ -342,18 +317,17 @@
         { title: 'Pre-fab homes2', src: 'https://cdn.vuetifyjs.com/images/cards/house.jpg', flex_xs: 12, flex_md: 4, flex_sm: 6 },
         { title: 'Favorite road trips2', src: 'https://cdn.vuetifyjs.com/images/cards/road.jpg', flex_xs: 12, flex_md: 4, flex_sm: 6 },
         { title: 'Best airlines2', src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex_xs: 12, flex_md: 4, flex_sm: 6 }
-      ]
+      ]*/
 		}
 	},
 		computed: {
 			...mapGetters('asinmenu', {
 					asins_list: 'asins',
-					
-
+					asinview: 'asinview',
 			}),
 			...mapGetters('settingss', {
-        asin_qw: 'asin_qw'
-      		}),
+					asin_qw: 'asin_qw'
+			}),
 
 			//...mapGetters(['uid']),
 			uid(){
@@ -381,7 +355,9 @@
 			...mapActions('asinmenu',{
           lookasin: 'lookasin'
       	}),
-
+			cardview(value){
+				this.$store.commit('asinmenu/asinview', value);
+			},
 			deleteTovar(){
 				Vue.http.get('http://bsr-consulting.com/alex.php', {
 					params: 

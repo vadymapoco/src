@@ -102,6 +102,9 @@ export default {
  		allkeyword_quant(state,value){
  			state.allkeyword_quant = value.length;
  		},
+ 		clearCurrentKeyword(state){
+ 			state.current_keyword = null;
+ 		}
  	
 
 
@@ -148,7 +151,7 @@ export default {
 				.then (
 				(response) => {
 
-					this.commit('currentAsinZerro');
+					//this.commit('currentAsinZerro'); //
 				},
 				(err) => {
 					console.log(err);

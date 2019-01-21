@@ -218,10 +218,11 @@
 
       		console.log('created hook');
       		console.log('keywords/lookkeyword actions в момент создания компонента');
+      		this.current_asin_id = this.$store.getters.current_asin.asin;
       		//this.$store.dispatch('keywords/lookkeyword');
       		console.log(this.$store.getters.current_asin.length);
       		//проверяем выбран ли асин или показываем все ключевые слова, если Асин не выбран то показываем все ключевые слова
-      		if(this.$store.getters.current_asin.length == 0) {
+      		if(!this.$store.getters.current_asin) {
 
       			this.keyword_array = this.$store.getters['keywords/keywords']; //копируем ссылку на массив ключевых слов
       			console.log(' массив пустой');
@@ -249,8 +250,6 @@
       			console.log('before Destroy');
       			console.log(this.keyword_array);
 
-      			
-      			
       			for (var i=0; i<this.keyword_array.length; i++) {
       				console.log(this.$store.getters.current_asin.asin);
       				console.log(this.keyword_array[i].keyword);
@@ -559,6 +558,8 @@
 				console.log(keyword.keyword);
 				this.$store.commit('keywords/current_keyword', keyword);
 				this.$router.push({ name: 'keywordTrack'});
+				console.log(this.current_asin_id);
+				console.log(this.$store.getters.current_asin.asin);
 			},
 			back(){
 				console.log('back ASIN');

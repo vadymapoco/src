@@ -36,14 +36,14 @@ export default new Vuex.Store({
 	state:{
 		one: 'one',
 		items: {},
-		uid: '',
-		user: null,
+		uid: '',  /*уникальный номер пользователя, получаем при регистрации. является главным ключем для всех данных пользователя*/
+		user: null, /*данные пользователя из FireBase*/
 		items: {},
 		addAsin: false,
 		settings: false,
 		addKeyWord: false,
 		fire_email: '',
-		addAsinPopup: false,
+		addAsinPopup: false, 
 		addKeywordPopup:false,
 		AddEventPopup: false,
 		editAsinPopup: false,
@@ -51,9 +51,9 @@ export default new Vuex.Store({
 		polesort: 'tag',
 		poletagsort: 'tag_name ASC',
 		polegroupsort: 'name_group ASC',
-		current_asin: [],
-		loading: false,
-		search_term: ''
+		current_asin: [], /*текущий ASIN*/
+		loading: false, /*состояние процесса загрузки данных из БД*/
+		search_term: '' /*данные из строки поиска в верхнем меню*/
 
 	},
 	getters: {

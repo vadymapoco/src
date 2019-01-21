@@ -12,7 +12,8 @@ export default {
  		asinhistory: [],
  		asinLoaded: false,
  		asin_quant: 0,
- 		
+ 		asinview: true, //true - table view, false - card view
+ 		sales: [], /*данные из таблицы tovar_history они задвоены с полем asinhistory надо исправить */
  	},
  	getters:{
  		asins(state){
@@ -32,7 +33,14 @@ export default {
  		},
  		asin_quant(state){
  			return state.asin_quant;
+ 		},
+ 		asinview(state){
+ 			return state.asinview;
+ 		},
+ 		sales(state){
+ 			return state.sales;
  		}
+
  	},
  	mutations:{
  		lookasin(state,value){
@@ -63,11 +71,35 @@ export default {
  			},
  		asin_quant(state, value){
  				state.asin_quant = value.length;
- 			}
+ 			},
+ 		asinview(state, value){
+ 			state.asinview = value;
+ 		},
+ 		sales(state, value){
+ 			console.log('sales mutation');
+ 			state.sales = value;
+ 		}
 
 
 	},
 	actions: {
+		sales(store){
+			console.log('sales action');
+			Vue.http.get('http://bsr-consulting.com/alex.php', {
+					params: {   sales : 'sales',
+								uid: this.getters.uid,
+							}
+				}).then (
+				(response) => {
+					console.log('sales action then');
+					
+					store.commit('sales', response.data);
+				},
+				(err) => {
+					console.log(err);
+				}
+				);
+		},
 		lookasin(store){
 			console.log('выполнение asinmenu/lookasin actions - запрашивает список всех асинов из БД')
 			if(!store.state.asinLoaded){
